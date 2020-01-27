@@ -1,0 +1,66 @@
+﻿@page "/RUsuarios"
+@using Entidades;
+@using DAL;
+<h1>Registro de usuarios</h1>
+
+<EditForm Model="@usuarios" OnValidSubmit="@Guardar">
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+        <label for="UsuarioId">Id</label>
+        <InputNumber @bind-Value="usuarios.UsuarioId" class="form-control" />
+
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </div>
+
+    <div class="form-group">
+        <label for="Nombres">Nombre</label>
+        <InputText @bind-Value="usuarios.Nombres" class="form-control" />
+        <ValidationMessage For="@(()=>usuarios.Nombres)" />
+    </div>
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <InputText @bind-Value="usuarios.Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="NivelUsuario">Nivel el usuario</label>
+        <InputNumber @bind-Value="usuarios.NivelUsuario" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="Usuario">Email</label>
+        <InputText @bind-Value="usuarios.Usuario" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="Clave">Clave</label>
+        <InputText @bind-Value="usuarios.Clave" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Nuevo</button>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+</EditForm>
+@code {
+    Usuarios usuarios = new Usuarios();
+
+    private void limpiar()
+    {
+
+    }
+
+    private void Guardar()
+    {
+        Contexto db=new Contexto();
+
+        db.Usuario.Add(usuarios);
+        db.SaveChanges();
+
+    }
+
+
+}
