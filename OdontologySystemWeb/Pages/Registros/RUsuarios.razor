@@ -1,50 +1,51 @@
 ﻿@page "/RUsuarios"
 @using Entidades;
 @using DAL;
+@using BLL;
 <h1>Registro de usuarios</h1>
 
 <EditForm Model="@usuarios" OnValidSubmit="@GuardarUsuario">
     <DataAnnotationsValidator />
 
-    @*<div class="form-group">
+        <div class="form-group">
             <label for="UsuarioId">Id</label>
-            <InputNumber @bind-Value="usuarios.UsuarioId" class="form-control" />
+            <InputNumber Id="UsuarioIdNum" @bind-Value="usuarios.UsuarioId" class="form-control" />
 
         </div>
         <div>
             <button type="submit" class="btn btn-primary">Buscar</button>
-        </div>*@
+        </div>
 
     <div class="form-group">
         <label for="Nombres">Nombre</label>
-        <InputText @bind-Value="usuarios.Nombres" class="form-control" />
-        <ValidationMessage For="@(()=>usuarios.Nombres)" />
+        <InputText Id="NombreText" @bind-Value="usuarios.Nombres" class="form-control" />
+        @*<ValidationMessage For="@(()=>usuarios.Nombres)" />*@
     </div>
     <div class="form-group">
         <label for="Email">Email</label>
-        <InputText @bind-Value="usuarios.Email" class="form-control" />
+        <InputText Id="EmailText"@bind-Value="usuarios.Email" class="form-control" />
     </div>
     <div class="form-group">
         <label for="NivelUsuario">Nivel del usuario</label>
-        <InputNumber @bind-Value="usuarios.NivelUsuario" class="form-control" />
+        <InputNumber Id="NivelUsuarioNum" @bind-Value="usuarios.NivelUsuario" class="form-control" />
     </div>
 
     <div class="form-group">
         <label for="Usuario">Usuario</label>
-        <InputText @bind-Value="usuarios.Usuario" class="form-control" />
+        <InputText Id="UsuarioInput"@bind-Value="usuarios.Usuario" class="form-control" />
     </div>
     <div class="form-group">
         <label for="Clave">Clave</label>
-        <InputText @bind-Value="usuarios.Clave" class="form-control" />
+        <InputText Id="ClaveText" @bind-Value="usuarios.Clave" class="form-control" />
     </div>
     <div class="form-group">
-        <label for="Clave">Clave</label>
-        <InputDate @bind-Value="usuarios.FechaIngreso" class="form-control" />
+        <label for="FechaIngreso">Fecha de ingreso</label>
+        <InputDate Id="FechaIngresoDate" @bind-Value="usuarios.FechaIngreso" class="form-control" />
     </div>
 
 
     <div class="form-group">
-        <button type="submit" class="btn btn-primary" @onclick="limpiar">Limpiar</button>
+        <button type="submit" class="btn btn-primary" @onclick="Limpiar">Limpiar</button>
         <button type="submit" class="btn btn-success">Guardar</button>
 
 
@@ -55,22 +56,58 @@
     public Usuarios usuarios { get; set; }
     public List<Usuarios> ListaUsuario { get; set; }
 
-    private void limpiar()
+    private void Limpiar()
     {
         usuarios = new Usuarios();
-
+        usuarios.FechaIngreso = DateTime.Now;
 
 
     }
     protected override void OnInitialized()
     {
-        usuarios = new Usuarios();
-        usuarios.FechaIngreso = DateTime.Now;
+        Limpiar();
+    }
+    private void Buscar()
+    {
+        RepositorioBase<Usuarios> Repositorio = new RepositorioBase<Usuarios>();
+        Usuarios usuarios = new Usuarios();
+        //int id;
+        //int.TryParse(usuarios.UsuarioId, out id);
+        //Limpiar();
+        //usuarios = RepositorioBase.Buscar(id);
+
+        //if (usuarios != null)
+        ////LlenarCampo(usuarios);
+        //else
+        ////MessageBox.Show("No encontrado.");
     }
     private void GuardarUsuario()
     {
+        RepositorioBase<Usuarios> db = new RepositorioBase<Usuarios>();
+        try
+        {
+            if(usuarios.UsuarioId == 0)
+            {
+                if (db.Guardar(usuarios))
+                {
+                    Limpiar();
+                }
+            }
+            else
+            {
+                if(db.Modificar(usuarios))
+                {
+                    Limpiar();
+                }
+            }
 
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
+
 
 
 }
