@@ -3,17 +3,17 @@
 @using DAL;
 <h1>Registro de usuarios</h1>
 
-<EditForm Model="@usuarios" OnValidSubmit="@Guardar">
+<EditForm Model="@usuarios" OnValidSubmit="@GuardarUsuario">
     <DataAnnotationsValidator />
 
-    <div class="form-group">
-        <label for="UsuarioId">Id</label>
-        <InputNumber @bind-Value="usuarios.UsuarioId" class="form-control" />
+    @*<div class="form-group">
+            <label for="UsuarioId">Id</label>
+            <InputNumber @bind-Value="usuarios.UsuarioId" class="form-control" />
 
-    </div>
-    <div>
-        <button type="submit" class="btn btn-primary">Buscar</button>
-    </div>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>*@
 
     <div class="form-group">
         <label for="Nombres">Nombre</label>
@@ -25,43 +25,50 @@
         <InputText @bind-Value="usuarios.Email" class="form-control" />
     </div>
     <div class="form-group">
-        <label for="NivelUsuario">Nivel el usuario</label>
+        <label for="NivelUsuario">Nivel del usuario</label>
         <InputNumber @bind-Value="usuarios.NivelUsuario" class="form-control" />
     </div>
+
     <div class="form-group">
-        <label for="Usuario">Email</label>
+        <label for="Usuario">Usuario</label>
         <InputText @bind-Value="usuarios.Usuario" class="form-control" />
     </div>
     <div class="form-group">
         <label for="Clave">Clave</label>
         <InputText @bind-Value="usuarios.Clave" class="form-control" />
     </div>
-
-    <div class="form-row">
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Nuevo</button>
-        </div>
-
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Guardar</button>
-        </div>
+    <div class="form-group">
+        <label for="Clave">Clave</label>
+        <InputDate @bind-Value="usuarios.FechaIngreso" class="form-control" />
     </div>
-    
+
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary" @onclick="limpiar">Limpiar</button>
+        <button type="submit" class="btn btn-success">Guardar</button>
+
+
+
+    </div>
 </EditForm>
 @code {
-    Usuarios usuarios = new Usuarios();
+    public Usuarios usuarios { get; set; }
+    public List<Usuarios> ListaUsuario { get; set; }
 
     private void limpiar()
     {
+        usuarios = new Usuarios();
+
+
 
     }
-
-    private void Guardar()
+    protected override void OnInitialized()
     {
-        Contexto db=new Contexto();
-
-        db.Usuario.Add(usuarios);
-        db.SaveChanges();
+        usuarios = new Usuarios();
+        usuarios.FechaIngreso = DateTime.Now;
+    }
+    private void GuardarUsuario()
+    {
 
     }
 
